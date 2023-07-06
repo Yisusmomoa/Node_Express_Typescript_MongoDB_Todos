@@ -1,0 +1,47 @@
+-crear carpeta del proyecto
+-instalar typescript como dependencia de desarrollo npm i --save-dev typescript
+-agregar el script al package.json "tsc", "tsc"
+-inicializar nuestro proyecto de typescript npm run tsc -- --init crea el archivo tsconfig.json
+-configurar archivo tsconfig.json
+    "sourceMap": true,
+    "outDir": "./build",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "skipDefaultLibCheck": true,
+-npm install express -E
+-se crea una carpeta llamada src, donde se almacenará todo el código desarrollado
+-se añade un archivo en la raiz de src src/index.ts
+-se añade lo siguiente al archivo index.ts
+    import express from "express";
+
+    const app=express()
+
+    app.use(express.json())
+
+    const PORT=3000
+
+    app.listen(PORT, ()=>{
+        console.log("listen port", PORT);
+    })
+-marcará un error en la primera línea que dice que no tiene los tipos de typescript.
+Siempre debe de ser dependencia de desarrollo
+Se arreglar utilizando el siguiente comando:
+npm i --save-dev @types/express
+-se agrega el siguiente comando al package.json
+"start":"node build/index.js",
+-se instala la dependencia npm install --save-dev ts-node-dev
+en pocas palabras es el nodemon de typescript
+-se añade el siguiente comando
+"dev":"ts-node-dev src/index.ts",
+-se instala el linter
+npm install ts-standard -D
+-se añade el siguiente script 
+"lint": "ts-standard",
+-se añade el siguiente código al package.json
+    "eslintConfig": {
+        "parserOptions": {
+            "project":"./tsconfig.json"
+        },
+        "extends":["./node_modules/ts-standard/eslintrc.json"]
+    }
