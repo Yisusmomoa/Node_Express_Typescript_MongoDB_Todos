@@ -12,7 +12,7 @@ const UserSchema = new Schema<IUser>({
   username: { type: String, required: true },
   email: {
     type: String,
-    requisred: true,
+    required: true,
     unique: true,
     trim: true
   },
