@@ -27,5 +27,5 @@ const TodoSchema = new Schema<ITodo>({
     ref: 'User'
   }
 })
-
-export default model<ITodo>('Todo', TodoSchema)
+const ModelTodo = model<ITodo>('Todo', TodoSchema)
+export default ModelTodo

@@ -25,4 +25,5 @@ const UserSchema = new Schema<IUser>({
   salt: { type: String }
 }, { timestamps: true })
 
-export default model<IUser>('User', UserSchema)
+const ModelUser = model<IUser>('User', UserSchema)
+export default ModelUser
