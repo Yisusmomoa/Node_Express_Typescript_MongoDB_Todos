@@ -1,5 +1,6 @@
-import bcrypt from 'bcrypt'
+import { hashAuth } from './hashAuth'
 
-export const hashAuth = async (password: string, salt: string): Promise<any> => {
-  return await bcrypt.hash(password, salt)
+export const validatePassword = async (password: string, salt: string, passwordEncrypt: string): Promise<boolean> => {
+  const passwordHash = await hashAuth(password, salt)
+  return passwordHash === passwordEncrypt
 }
