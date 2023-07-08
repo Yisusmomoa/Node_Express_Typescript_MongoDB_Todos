@@ -25,8 +25,11 @@ router.post('/signup', async (req, res) => {
 router.post('/signin', async (req, res) => {
   try {
     const user: loginUser = req.body
-    const result = await signin(user)
-    res.status(201).send(result)
+    const token = await signin(user)
+    res.header('Access-Control-Allow-Origin', req.headers.origin)
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    res.cookie('token', token)
+    res.status(201).send({ message: 'Usuario logeado', token })
   } catch (error) {
     res.status(400).send({ message: error.message })
   }
@@ -41,3 +44,5 @@ router.post('/signin', async (req, res) => {
 // })
 
 export default router
+
+// TODO implementar JWT, me y logout
