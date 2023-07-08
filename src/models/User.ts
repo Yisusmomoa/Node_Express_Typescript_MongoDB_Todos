@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import { encryptPassword } from '../utils/encryptPassword'
 
 export interface IUser {
   id: number
@@ -24,6 +25,16 @@ const UserSchema = new Schema<IUser>({
   },
   salt: { type: String }
 }, { timestamps: true })
+
+UserSchema.pre('save', async function (next) {
+  try {
+    const [salt, password] = await encryptPassword(this.password)
+    this.salt = salt
+    this.password = password
+  } catch (error) {
+    next(error)
+  }
+})
 
 const ModelUser = model<IUser>('User', UserSchema)
 export default ModelUser

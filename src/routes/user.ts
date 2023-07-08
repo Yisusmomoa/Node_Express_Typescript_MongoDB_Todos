@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { createUser } from '../types'
-import { signup } from '../services/user'
+import { createUser, loginUser } from '../types'
+import { signin, signup } from '../services/user'
 
 const router = Router()
 
@@ -21,9 +21,16 @@ router.post('/signup', async (req, res) => {
   }
 })
 
-// router.post('/signin', async (req, res) => {
-
-// })
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.post('/signin', async (req, res) => {
+  try {
+    const user: loginUser = req.body
+    const result = await signin(user)
+    res.status(201).send(result)
+  } catch (error) {
+    res.status(400).send({ message: error.message })
+  }
+})
 
 // router.get('/me', async (req, res) => {
 
