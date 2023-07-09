@@ -1,14 +1,11 @@
-import mongoose, { Schema, model } from 'mongoose'
-import { IUser } from './User'
+import { Schema, model } from 'mongoose'
 
 type statusTodo = 'pending' | 'to do' | 'doing' | 'completed'
-type userCreateTodo = Pick<IUser, 'id' | 'username'>
-interface ITodo {
-  id: number
+export interface ITodo {
   title?: string
   description?: string
   status: statusTodo
-  createdBy: userCreateTodo
+  createdBy: number
 }
 
 const TodoSchema = new Schema<ITodo>({
@@ -23,9 +20,11 @@ const TodoSchema = new Schema<ITodo>({
     enum: ['pending', 'to do', 'doing', 'completed']
   },
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    type: Number,
+    ref: 'User',
+    required: true
   }
 })
+
 const ModelTodo = model<ITodo>('Todo', TodoSchema)
 export default ModelTodo

@@ -1,15 +1,17 @@
 import { Schema, model } from 'mongoose'
 import { encryptPassword } from '../utils/encryptPassword'
+import { ITodo } from './Todo'
 
 export interface IUser {
-  id: number
+  id: string
   username: string
   email: string
   password: string
   salt: string
+  todos: ITodo[]
 }
 
-const UserSchema = new Schema<IUser>({
+export const UserSchema = new Schema<IUser>({
   username: { type: String, required: true },
   email: {
     type: String,
@@ -23,7 +25,11 @@ const UserSchema = new Schema<IUser>({
     minlength: 8,
     maxlength: 15
   },
-  salt: { type: String }
+  salt: { type: String },
+  todos: [{
+    type: Schema.Types.ObjectId,
+    ref: 'todos'
+  }]
 }, { timestamps: true })
 
 UserSchema.pre('save', async function (next) {
