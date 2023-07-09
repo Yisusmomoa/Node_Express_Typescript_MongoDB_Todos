@@ -1,9 +1,7 @@
-import { NextFunction, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { verifyToken } from '../config/token'
-import { CustomRequest } from '../CustomRequest'
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const authMe = (req: CustomRequest, res: Response, next: NextFunction) => {
+function authMe (req: Request, res: Response, next: NextFunction): void {
   try {
     res.header('Access-Control-Allow-Origin', req.headers.origin)
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
@@ -11,13 +9,15 @@ const authMe = (req: CustomRequest, res: Response, next: NextFunction) => {
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (!token) throw new Error('token invalido')
     const data = verifyToken(token)
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     req.user = data
-    return next()
+    next()
   } catch (error) {
-    return res.status(500).send({
+    res.status(500).send({
       success: false,
       message: error.message
     })
   }
 }
+
 export default authMe

@@ -5,7 +5,7 @@ export interface ITodo {
   title?: string
   description?: string
   status: statusTodo
-  createdBy: number
+  createdBy: string
 }
 
 const TodoSchema = new Schema<ITodo>({
@@ -20,7 +20,7 @@ const TodoSchema = new Schema<ITodo>({
     enum: ['pending', 'to do', 'doing', 'completed']
   },
   createdBy: {
-    type: Number,
+    type: String,
     ref: 'User',
     required: true
   }

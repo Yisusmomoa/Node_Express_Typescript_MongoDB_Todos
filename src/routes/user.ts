@@ -1,13 +1,12 @@
-import { Response, Router } from 'express'
+import { Request, Response, Router } from 'express'
 import { createUser, loginUser } from '../types'
 import { signin, signup } from '../services/user'
 import authMe from '../middlewares/authMe'
-import { CustomRequest } from '../CustomRequest'
 
 const router = Router()
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.post('/signup', async (req: CustomRequest, res: Response) => {
+router.post('/signup', async (req: Request, res: Response) => {
   try {
     const user: createUser = req.body
     const result = await signup(user)
@@ -24,14 +23,14 @@ router.post('/signup', async (req: CustomRequest, res: Response) => {
 })
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.post('/signin', async (req: CustomRequest, res: Response) => {
+router.post('/signin', async (req: Request, res: Response) => {
   try {
     const user: loginUser = req.body
     const token = await signin(user)
     res.header('Access-Control-Allow-Origin', req.headers.origin)
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
     res.cookie('token', token)
-    res.status(201).send({ message: 'Usuario logeado', token })
+    res.status(200).send({ message: 'Usuario logeado', token })
   } catch (error) {
     res.status(400).send({ message: error.message })
   }
@@ -39,15 +38,19 @@ router.post('/signin', async (req: CustomRequest, res: Response) => {
 
 router.use(authMe)
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.get('/me', async (req: CustomRequest, res: Response) => {
+router.get('/me', async (req: Request, res: Response) => {
   try {
-    res.header('Access-Control-Allow-Origin', req.headers.origin)
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-    res.status(200).send({
-      success: true,
-      message: 'usuario encontrado',
-      result: req.user
-    })
+    if ('user' in req) {
+      console.log('🚀 ~ file: user.ts:45 ~ router.get ~ req:', req.user)
+
+      res.header('Access-Control-Allow-Origin', req.headers.origin)
+      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+      res.status(200).send({
+        success: true,
+        message: 'usuario encontrado',
+        result: req.user
+      })
+    } else throw new Error('.l.')
   } catch (error) {
     return res.status(400).send({
       success: false,
@@ -57,7 +60,7 @@ router.get('/me', async (req: CustomRequest, res: Response) => {
 })
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.post('/logout', async (_req: CustomRequest, res: Response) => {
+router.post('/logout', async (_req: Request, res: Response) => {
   try {
     res.clearCookie('token', {
       secure: true,
