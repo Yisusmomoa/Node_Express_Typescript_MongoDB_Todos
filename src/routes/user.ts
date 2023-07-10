@@ -40,17 +40,13 @@ router.use(authMe)
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get('/me', async (req: Request, res: Response) => {
   try {
-    if ('user' in req) {
-      console.log('🚀 ~ file: user.ts:45 ~ router.get ~ req:', req.user)
-
-      res.header('Access-Control-Allow-Origin', req.headers.origin)
-      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-      res.status(200).send({
-        success: true,
-        message: 'usuario encontrado',
-        result: req.user
-      })
-    } else throw new Error('.l.')
+    res.header('Access-Control-Allow-Origin', req.headers.origin)
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    res.status(200).send({
+      success: true,
+      message: 'usuario encontrado',
+      result: req.user
+    })
   } catch (error) {
     return res.status(400).send({
       success: false,

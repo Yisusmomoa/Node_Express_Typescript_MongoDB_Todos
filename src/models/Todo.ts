@@ -5,7 +5,7 @@ export interface ITodo {
   title?: string
   description?: string
   status: statusTodo
-  createdBy: string
+  createdBy: Schema.Types.ObjectId
 }
 
 const TodoSchema = new Schema<ITodo>({
@@ -20,9 +20,8 @@ const TodoSchema = new Schema<ITodo>({
     enum: ['pending', 'to do', 'doing', 'completed']
   },
   createdBy: {
-    type: String,
-    ref: 'User',
-    required: true
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 
