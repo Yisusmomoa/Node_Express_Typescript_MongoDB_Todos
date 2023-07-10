@@ -1,6 +1,6 @@
 // import Todo from '../models/Todo'
 import ModelTodo, { statusTodo } from '../models/Todo'
-import { createTodo } from '../types'
+import { createTodo, updatedTodo } from '../types'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const newTodo = async (todo: createTodo) => {
@@ -45,6 +45,19 @@ export const changeStatus = async (id: string, idUser: string, status: statusTod
     _id: id
   }, {
     status
+  })
+  if (!result.acknowledged) throw new Error('Error at updated todo')
+  return result
+}
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const todoUpdate = async (id: string, idUser: string, todo: updatedTodo) => {
+  const result = await ModelTodo.updateOne({
+    createdBy: idUser,
+    _id: id
+  }, {
+    title: todo.title,
+    description: todo.description
+
   })
   if (!result.acknowledged) throw new Error('Error at updated todo')
   return result

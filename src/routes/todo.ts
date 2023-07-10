@@ -1,7 +1,7 @@
 import { Router, Response, Request } from 'express'
 import authMe from '../middlewares/authMe'
-import { createTodo } from '../types'
-import { changeStatus, deleteTodo, newTodo, showTodoById, showTodosByUser } from '../services/todo'
+import { createTodo, updatedTodo } from '../types'
+import { changeStatus, deleteTodo, newTodo, showTodoById, showTodosByUser, todoUpdate } from '../services/todo'
 import ModelUser from '../models/User'
 import { statusTodo } from '../models/Todo'
 
@@ -77,4 +77,16 @@ router.patch('/:id', async (req: Request, res: Response) => {
   }
 })
 
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.put('/:id', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const idUser = req.user.id
+    const todoToUpdate: updatedTodo = req.body
+    const result = await todoUpdate(id, idUser, todoToUpdate)
+    res.status(200).send({ result, message: 'qwe' })
+  } catch (error) {
+    res.status(400).send({ message: error.message })
+  }
+})
 export default router

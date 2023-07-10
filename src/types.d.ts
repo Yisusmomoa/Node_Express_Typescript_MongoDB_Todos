@@ -7,3 +7,4 @@ export type loginUser = Pick<IUser, 'email' | 'password'>
 
 export type createTodo = Pick<ITodo, 'title' | 'description' | 'status' | 'createdBy'>
 export type showTodo = Pick<ITodo, 'title' | 'description' | 'status' | 'createdBy'>
+export type updatedTodo = Pick<ITodo, 'title' | 'description'>
