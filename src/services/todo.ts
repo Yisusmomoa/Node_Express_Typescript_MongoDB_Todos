@@ -8,3 +8,11 @@ export const newTodo = async (todo: createTodo) => {
   console.log('🚀 ~ file: todo.ts:9 ~ newTodo ~ result:', result)
   return result
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const showTodosByUser = async (id: string) => {
+  const todos = await ModelTodo.find({
+    createdBy: id
+  })
+  return todos
+}
