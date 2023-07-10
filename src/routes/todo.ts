@@ -1,7 +1,7 @@
 import { Router, Response, Request } from 'express'
 import authMe from '../middlewares/authMe'
 import { createTodo } from '../types'
-import { newTodo, showTodosByUser } from '../services/todo'
+import { newTodo, showTodoById, showTodosByUser } from '../services/todo'
 import ModelUser from '../models/User'
 
 const router = Router()
@@ -38,9 +38,19 @@ router.get('/', async (req: Request, res: Response) => {
     res.status(400).send({ message: error.message })
   }
 })
-// router.get('/:id', (req: Request, res: Response) => {
 
-// })
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.get('/:id', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const idUser = req.user.id
+    const result = await showTodoById(id, idUser)
+    res.status(200).send(result)
+  } catch (error) {
+    res.status(400).send({ message: error.message })
+  }
+})
+
 // router.delete('/:id', (req: Request, res: Response) => {
 
 // })

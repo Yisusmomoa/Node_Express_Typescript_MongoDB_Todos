@@ -16,3 +16,13 @@ export const showTodosByUser = async (id: string) => {
   })
   return todos
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const showTodoById = async (id: string, idUser: string) => {
+  const todo = await ModelTodo.findOne({
+    createdBy: idUser,
+    _id: id
+  })
+  if (todo == null) throw new Error('Todo does not found')
+  return todo
+}
