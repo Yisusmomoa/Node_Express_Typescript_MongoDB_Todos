@@ -1,8 +1,9 @@
 import { Router, Response, Request } from 'express'
 import authMe from '../middlewares/authMe'
 import { createTodo } from '../types'
-import { newTodo, showTodoById, showTodosByUser } from '../services/todo'
+import { changeStatus, deleteTodo, newTodo, showTodoById, showTodosByUser } from '../services/todo'
 import ModelUser from '../models/User'
+import { statusTodo } from '../models/Todo'
 
 const router = Router()
 
@@ -51,8 +52,29 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 })
 
-// router.delete('/:id', (req: Request, res: Response) => {
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const idUser = req.user.id
+    const result = await deleteTodo(id, idUser)
+    res.status(200).send({ result, message: 'Your todo was deleted successfully' })
+  } catch (error) {
+    res.status(400).send({ message: error.message })
+  }
+})
 
-// })
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.patch('/:id', async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id
+    const idUser = req.user.id
+    const status: statusTodo = req.body.status
+    const result = await changeStatus(id, idUser, status)
+    res.status(200).send({ result, message: 'qwe' })
+  } catch (error) {
+    res.status(400).send({ message: error.message })
+  }
+})
 
 export default router

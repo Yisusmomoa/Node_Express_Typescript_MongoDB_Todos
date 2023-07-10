@@ -1,6 +1,12 @@
 import { Schema, model } from 'mongoose'
 
-type statusTodo = 'pending' | 'to do' | 'doing' | 'completed'
+// export type statusTodo = 'pending' | 'to do' | 'doing' | 'completed'
+export enum statusTodo {
+  Pending = 'pending',
+  ToDo = 'to do',
+  Doing = 'doing',
+  Completed = 'completed',
+}
 export interface ITodo {
   title?: string
   description?: string
@@ -17,7 +23,7 @@ const TodoSchema = new Schema<ITodo>({
   },
   status: {
     type: String,
-    enum: ['pending', 'to do', 'doing', 'completed']
+    enum: Object.values(statusTodo)
   },
   createdBy: {
     type: Schema.Types.ObjectId,
