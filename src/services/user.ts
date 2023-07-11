@@ -1,6 +1,7 @@
 import { generateToken } from '../config/token'
 import ModelUser from '../models/User'
-import { createUser, loginUser, showUser } from '../types'
+import { createUser, loginUser, showUser, updatedUser } from '../types'
+import { encryptPassword } from '../utils/encryptPassword'
 import { validatePassword } from '../utils/validatePassword'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -23,4 +24,23 @@ export const signin = async (user: loginUser) => {
   }
   const token = generateToken(payload)
   return token
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export const userUpdate = async (user: updatedUser) => {
+  if (user.password != null) {
+    const [newSalt, newPassword] = await encryptPassword(user.password)
+    user.password = newPassword
+    user.salt = newSalt
+  }
+  const result = await ModelUser.updateOne({
+    _id: user.id
+  }, {
+    email: user.email,
+    username: user.username,
+    password: user.password,
+    salt: user.salt
+  }
+  )
+  return result
 }

@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express'
-import { createUser, loginUser } from '../types'
-import { signin, signup } from '../services/user'
+import { createUser, loginUser, updatedUser } from '../types'
+import { signin, signup, userUpdate } from '../services/user'
 import authMe from '../middlewares/authMe'
 
 const router = Router()
@@ -70,6 +70,25 @@ router.post('/logout', async (_req: Request, res: Response) => {
       success: false,
       message: error
     })
+  }
+})
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.put('/', async (req: Request, res: Response) => {
+  try {
+    const idUser = req.user.id
+    const infoUser = req.body
+    const userToUpdated: updatedUser = {
+      id: idUser,
+      username: infoUser.username,
+      email: infoUser.email,
+      password: infoUser.password,
+      salt: ''
+    }
+    const result = await userUpdate(userToUpdated)
+    res.status(200).send({ result, message: 'edit' })
+  } catch (error) {
+    res.status(400).send({ message: error.message })
   }
 })
 

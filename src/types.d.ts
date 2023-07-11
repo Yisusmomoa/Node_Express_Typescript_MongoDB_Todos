@@ -4,6 +4,7 @@ import { IUser } from './models/User'
 export type createUser = Pick<IUser, 'username' | 'email' | 'password'>
 export type showUser = Pick<IUser, 'username' | 'email' | 'id'>
 export type loginUser = Pick<IUser, 'email' | 'password'>
+export type updatedUser = Pick<IUser, 'id' | 'email' | 'password' | 'username' | 'salt'>
 
 export type createTodo = Pick<ITodo, 'title' | 'description' | 'status' | 'createdBy'>
 export type showTodo = Pick<ITodo, 'title' | 'description' | 'status' | 'createdBy'>
