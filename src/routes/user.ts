@@ -2,11 +2,12 @@ import { Request, Response, Router } from 'express'
 import { createUser, loginUser, updatedUser } from '../types'
 import { signin, signup, userUpdate } from '../services/user'
 import authMe from '../middlewares/authMe'
+import { validateCreate, validateLogin } from '../middlewares/user'
 
 const router = Router()
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.post('/signup', async (req: Request, res: Response) => {
+router.post('/signup', validateCreate, async (req: Request, res: Response) => {
   try {
     const user: createUser = req.body
     const result = await signup(user)
@@ -23,7 +24,7 @@ router.post('/signup', async (req: Request, res: Response) => {
 })
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.post('/signin', async (req: Request, res: Response) => {
+router.post('/signin', validateLogin, async (req: Request, res: Response) => {
   try {
     const user: loginUser = req.body
     const token = await signin(user)
